@@ -139,6 +139,53 @@
     "sensors_applicable": []
   },
   {
+    "slug": "jira-bridge-ticket-intake",
+    "number": "0.4",
+    "name": "Jira Ticket Intake",
+    "plugin": "jira-bridge",
+    "phase": "initialization",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "jira-bridge-ticket-intake-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "produces": [
+      "jira-bridge-ticket-context"
+    ],
+    "consumes": [],
+    "requires_stage": [
+      "workspace-detection"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
+    "inputs": "The intent's original request text (WORKFLOW_STARTED audit entry / aidlc-state.md header)",
+    "outputs": "jira-bridge-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      }
+    ],
+    "sensors_applicable": []
+  },
+  {
     "slug": "intent-capture",
     "number": "1.1",
     "name": "Intent Capture & Framing",
@@ -2648,6 +2695,67 @@
         "matches": "**/*.{ts,tsx}"
       }
     ]
+  },
+  {
+    "slug": "jira-bridge-bolt-push-log",
+    "number": "3.8",
+    "name": "Bolt Push and Log",
+    "plugin": "jira-bridge",
+    "phase": "construction",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "jira-bridge-bolt-push-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "for_each": "unit-of-work",
+    "produces": [
+      "jira-bridge-implementation-log"
+    ],
+    "consumes": [
+      {
+        "artifact": "code-summary",
+        "required": true
+      },
+      {
+        "artifact": "unit-of-work",
+        "required": true
+      }
+    ],
+    "requires_stage": [
+      "code-generation"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
+    "inputs": "worktree info for the unit's Bolt (aidlc engine worktree info --slug <slug>); the unit's code-summary.md",
+    "outputs": "git push of the unit's bolt-<slug> branch to origin; jira-bridge-implementation-log.md appended at the intent record root",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/phases/construction.md",
+        "scope": "phase"
+      }
+    ],
+    "sensors_applicable": []
   },
   {
     "slug": "deployment-pipeline",

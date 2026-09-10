@@ -1,0 +1,13 @@
+{
+  "name": "jira-bridge",
+  "version": "0.1.0",
+  "description": "Detects a Jira ticket key in the intent's request, fetches the ticket, refreshes a stable read-only mirror, clones the repos it impacts, and pushes+logs each construction unit's branch.",
+  "author": { "name": "Pravin Narkhede" },
+  "dependencies": ["core"],
+  "aidlc": {
+    "contributes": {
+      "stages": "stages/",
+      "agents": "agents/"
+    }
+  }
+}

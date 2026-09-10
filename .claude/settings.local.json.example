@@ -1,0 +1,9 @@
+{
+  "_comment": "Personal Claude Code overrides.",
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "85",
+    "AWS_AIDLC_DEFAULT_SCOPE": "classic"
+  },
+  "model": "opus",
+  "effortLevel": "xhigh"
+}

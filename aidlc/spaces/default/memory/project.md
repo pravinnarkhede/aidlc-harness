@@ -11,9 +11,23 @@
 
 ## Way of Working
 
-<!-- Project-specific specialisation. Example: -->
-<!-- This monorepo requires package-scoped branch names and a package owner -->
-<!-- review in addition to the team's normal merge policy. -->
+- The backend (`golfler_asp_2`) owns the API contract for every consumer
+  repo (`golfler_pos_2`, `sgs-cts-angular`, `cc_mobile_pos`, `cc_api_manager`,
+  `cc_membership_portal`, `cc_ios`, `cc_android`). Before changing an API:
+  identify existing consumers, confirm whether backward compatibility is
+  required, implement and verify the backend change first, only then update
+  consumers. Do not let clients assume API shape before the backend contract
+  is confirmed.
+- Follow existing naming, folder structure, DI, logging, exception-handling,
+  and API-response conventions already present in the repo being touched —
+  inspect nearby code before writing new code, rather than introducing a new
+  pattern the codebase doesn't already use.
+- Legacy `golfler_asp_2` code is being migrated .NET Framework → .NET/.NET 10.
+  For migrated functionality, preserve legacy behavior: copy/reproduce the
+  existing implementation, apply only .NET-compatibility changes, then
+  functionally verify against the legacy version. Record every compatibility
+  change (legacy behavior, what changed, why, verification) in
+  `aidlc/compatibility-changes.md`.
 
 ## Walking Skeleton
 
@@ -23,7 +37,16 @@
 
 ## Testing Posture
 
-<!-- Project-specific specialisation. -->
+- When migrating a `golfler_asp_2` endpoint legacy → Core, compare HTTP
+  status, response structure/property names/values, null handling,
+  validation, error behavior, DB side effects, authorization, and
+  calculations against the legacy implementation. JSON property ordering is
+  not a functional difference; a value or structure difference is and must
+  be investigated, not dismissed.
+- Regression focus areas across this platform: payments, orders, tee times,
+  activities, events, F&B, authentication, authorization, and any other
+  high-usage API or frequently used client flow. Changes touching these
+  need explicit regression scenarios identified before implementation.
 
 ## Deployment
 
@@ -35,7 +58,9 @@
 
 ## Tech Stack
 
-<!-- Technology choices locked for this project. -->
+- `golfler_asp_2` backend is mid-migration from .NET Framework to
+  .NET/.NET 10 — see "Way of Working" and "Forbidden" for the preservation
+  rules that apply to any change touching migrated code.
 
 ## Decided
 
@@ -48,9 +73,23 @@
 
 ## Forbidden
 
-<!-- Populated by practices-discovery affirmation gate. -->
-<!-- Format: NEVER [behavior] (affirmed [date]) -->
-<!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
+- NEVER redesign, optimize, refactor, or simplify `golfler_asp_2` business
+  logic as a side effect of a .NET Framework → .NET/.NET 10 migration —
+  functional equivalence with the legacy implementation is the goal; only
+  framework/runtime-compatibility changes or explicitly requested behavior
+  changes are in scope.
+- NEVER silently change an API contract another repo consumes — document
+  old contract, new contract, reason, affected consumers, and migration/
+  backward-compatibility strategy before changing it.
+- NEVER change the `golfler_asp_2` database schema just because a new
+  table/model would be architecturally cleaner — only when the feature
+  actually requires it.
+- NEVER turn a feature change into a "while we're here" cleanup — no
+  renaming unrelated classes, no unrelated refactors, no reformatting whole
+  files, no unrelated API response changes.
+- NEVER commit across independent repos or move files between them when
+  working a ticket that touches multiple cloned repos at once — keep
+  commits scoped to the repo they actually belong to.
 
 ## Mandated
 

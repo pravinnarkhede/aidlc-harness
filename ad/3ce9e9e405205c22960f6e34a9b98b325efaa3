@@ -1,0 +1,78 @@
+.claude/agents/workspace-project-onboarding-agent.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 1-49
+.claude/skills/aidlc/SKILL.md
+  s_fcbc7b34e42f37::t_e8a59b134068f1 188-198
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 215-216,240
+plugins/workspace/.aidlc-plugin/plugin.json
+  s_fcbc7b34e42f37::t_ae115981387021 1-13
+.claude/agents/workspace-ticket-intake-agent.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 2,4,6,16,21
+plugins/workspace/agents/workspace-bolt-push-agent.md
+  s_fcbc7b34e42f37::t_ae115981387021 1-27
+plugins/workspace/stages/initialization/workspace-project-onboarding.md
+  s_fcbc7b34e42f37::t_ae115981387021 1-162
+plugins/workspace/stages/construction/workspace-bolt-push-log.md
+  s_fcbc7b34e42f37::t_ae115981387021 1-114
+.claude/tools/data/plugin-files-workspace.json
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 1-5
+.claude/tools/data/stage-graph.json
+  s_fcbc7b34e42f37::t_698721eab9558a 144,171,192,195-196,200,202,205,210,213,215-217
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 142,145,149,153-154,172,190,193,197,201,206,220,2749,2752,2756,2761,2788
+  s_fcbc7b34e42f37::t_e8a59b134068f1 173-189,191,194,198-199,203-204,207-209,211-212,214,218
+plugins/workspace/agents/workspace-ticket-intake-agent.md
+  s_fcbc7b34e42f37::t_ae115981387021 1-48
+.claude/tools/data/plugin-owned-workspace.json
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 3,6-7,10-11,14-15,18-27
+aidlc/spaces/default/memory/team.md
+  s_fcbc7b34e42f37::t_9f529127b57105 45-54
+  s_fcbc7b34e42f37::t_9e4d5844570dc8 14-18
+.claude/aidlc-common/stages/initialization/workspace-project-onboarding.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 1-162
+aidlc/spaces/default/memory/project.md
+  s_fcbc7b34e42f37::t_08726c778a5b59 45
+plugins/workspace/README.md
+  s_fcbc7b34e42f37::t_ae115981387021 1,7-10,13-21,23-28,31,63,73,81,118-128
+.claude/tools/data/plugin-compose-workspace.json
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 3,5
+plugins/workspace/stages/initialization/workspace-ticket-intake.md
+  s_fcbc7b34e42f37::t_ae115981387021 2,4,11,13,17,21,33,87,116-129,160-164,251,261
+.claude/aidlc-common/stages/construction/workspace-bolt-push-log.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 1-114
+.claude/agents/workspace-bolt-push-agent.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 2,4,6,10,15,20,27-28
+.claude/aidlc-common/stages/initialization/workspace-ticket-intake.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 2,4,11,13,17,21,33,87,116-129,160-164,251,261
+.claude/skills/workspace-bolt-push-log/SKILL.md
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 1-50
+README.md
+  s_fcbc7b34e42f37::t_b003668b648f96 113,115-117,119
+  s_fcbc7b34e42f37::t_a75fdcd2112c2b 44
+  s_fcbc7b34e42f37::t_4fa58909abd9c9 4,9,39-40,52,114,118,157
+  s_fcbc7b34e42f37::t_990a93ad0f1cb1 48-51,53-57
+  s_fcbc7b34e42f37::t_69b1c025024912 21
+.claude/tools/data/scope-grid.json
+  s_fcbc7b34e42f37::t_ef628b0cd6d302 7-8,32,47-48,72,87-88,112,127-128,152,167-168,192,207-208,232,247-248,272,287-288,312,327-328,352,367-368,392,407-408,432
+plugins/workspace/agents/workspace-project-onboarding-agent.md
+  s_fcbc7b34e42f37::t_ae115981387021 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ad3ce9e9e405205c22960f6e34a9b98b325efaa3",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

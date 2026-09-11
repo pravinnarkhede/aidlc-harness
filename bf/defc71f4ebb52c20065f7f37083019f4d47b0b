@@ -1,0 +1,24 @@
+aidlc/spaces/default/memory/project.md
+  s_fcbc7b34e42f37::t_da5656c817d8d9 14-30,40-49,61-63,76-92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "bfdefc71f4ebb52c20065f7f37083019f4d47b0b",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

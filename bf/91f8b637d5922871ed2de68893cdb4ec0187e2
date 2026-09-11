@@ -1,0 +1,71 @@
+.claude/tools/data/stage-graph.json
+  s_fcbc7b34e42f37::t_c836b4afdf5271 95,97-98,100-102,105-108,115,118,120-122,124-125,143,145-146,150,154,158-159,172-173,191,193,195-197,200,203,207,210-211,213-217,219-220,2545,2547-2607,2709
+.claude/aidlc-common/stages/initialization/auxiliary-ticket-intake.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 2,4,11,13,17,21,33,87,121,123,251,261
+plugins/auxiliary/agents/auxiliary-bolt-push-agent.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-27
+plugins/auxiliary/stages/initialization/auxiliary-project-onboarding.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-10,12-35,37-58,60-154,156-162
+  s_fcbc7b34e42f37::t_456dc39d292825 11,36,59,155
+.claude/skills/aidlc/SKILL.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 214-216,238-240
+.claude/tools/data/plugin-compose-auxiliary.json
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-6
+.claude/agents/auxiliary-ticket-intake-agent.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 2,4,6,16,21
+plugins/auxiliary/stages/initialization/auxiliary-ticket-intake.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 2,4,11,13,17,21,33,87,121,123,251,261
+plugins/auxiliary/agents/auxiliary-project-onboarding-agent.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-44,46
+  s_fcbc7b34e42f37::t_456dc39d292825 45
+plugins/auxiliary/agents/auxiliary-ticket-intake-agent.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-48
+.claude/tools/data/plugin-files-auxiliary.json
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-5
+.claude/tools/data/plugin-owned-auxiliary.json
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-30
+.claude/skills/auxiliary-bolt-push-log/SKILL.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-50
+.claude/aidlc-common/stages/construction/auxiliary-bolt-push-log.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-114
+.claude/agents/auxiliary-bolt-push-agent.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 2,4,6,10,15,20,27-28
+plugins/auxiliary/README.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 13,21,28,31,63,73,81,119,126
+  s_fcbc7b34e42f37::t_456dc39d292825 1
+plugins/auxiliary/.aidlc-plugin/plugin.json
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-13
+README.md
+  s_fcbc7b34e42f37::t_15cfa746b69608 4,9,39-40,52,114,118,157
+  s_fcbc7b34e42f37::t_7945e0e0b57704 44
+  s_fcbc7b34e42f37::t_71556ffc0ff85b 21
+.claude/aidlc-common/stages/initialization/auxiliary-project-onboarding.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-162
+plugins/auxiliary/stages/construction/auxiliary-bolt-push-log.md
+  s_fcbc7b34e42f37::t_bfd460660b0fd2 1-114
+.claude/agents/auxiliary-project-onboarding-agent.md
+  s_fcbc7b34e42f37::t_c836b4afdf5271 1-49
+.claude/tools/data/scope-grid.json
+  s_fcbc7b34e42f37::t_c836b4afdf5271 6-7,30,46-47,70,86-87,110,126-127,150,166-167,190,206-207,230,246-247,270,286-287,310,326-327,350,366-367,390,406-407,430
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "bf91f8b637d5922871ed2de68893cdb4ec0187e2",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

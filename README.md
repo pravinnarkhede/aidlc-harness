@@ -1,36 +1,85 @@
 # aidlc-harness
 
-This repo is an AWS AI-DLC (AIDLC) install, extended with a plugin —
-`plugins/auxiliary/` — that gives the `/aidlc` workflow a "ticket in,
-workspace ready" front door: point it at a Jira ticket key and it fetches the
-ticket, clones the repos it impacts into a dedicated folder, seeds a
-reverse-engineering cache, and hands off into AIDLC's normal
-requirements → design → construction pipeline. No separate command, no core
-AIDLC file ever hand-edited — see `plugins/auxiliary/README.md` for how the
-plugin itself is built.
+This repo is an AWS AI-DLC (AIDLC) install extended with one plugin —
+`plugins/auxiliary/` — that closes the gap between "I have a ticket" and
+"AIDLC is analyzing the right code." It is generic: nothing in it is tied to
+any one project, team, or repo list. Use this same harness for every project
+you work on; only the *content* it gathers (repos, architecture, standards)
+is project-specific, and that content lives per-project, not in the harness
+itself.
 
-This file is the practical guide: what's here, how to set it up once, and how
-to actually work a ticket day to day.
+## Why this exists
 
-## What's in this repo
+Out of the box, AIDLC starts from a freeform typed description and assumes
+the code you're working on is already sitting on disk, already understood,
+with no connection to your ticket tracker. In practice, real work usually
+starts from a ticket, touches several repos at once, and needs the AI to
+actually understand the codebase before it can plan anything useful. Doing
+that by hand every time — find the ticket, figure out which repos it
+touches, clone them, explain the architecture to the AI, remember to push
+and log what got built — is exactly the kind of repetitive setup tax that
+should be automated once and reused forever.
+
+The `auxiliary` plugin automates that tax without changing a single AIDLC
+core file, so it survives `aidlc update` cleanly and can be dropped into any
+AIDLC project.
+
+## What you get
+
+- **A ticket key becomes a working, isolated environment automatically.**
+  Type `/aidlc GOLF-123 <description>` and the plugin fetches the real
+  ticket, works out which repos it affects, clones exactly those, and hands
+  off into AIDLC's normal requirements → design → construction pipeline —
+  no manual repo hunting, no manual cloning.
+- **The AI actually understands your codebase before it plans anything.**
+  A one-time onboarding pass reverse-engineers every repo in the project and
+  writes an architecture overview and coding-standards doc that every
+  subsequent ticket's planning stages can cite — instead of every ticket
+  starting from a blank slate.
+- **Multiple tickets can be worked at once without stepping on each other.**
+  Each ticket gets its own folder, its own clone of the repos it touches,
+  its own AIDLC state — fully isolated, verified by a safety check that
+  refuses to proceed if a session isn't pointed at the right folder.
+- **Construction branches get pushed and logged without being asked.**
+  Every unit of work's branch is pushed to origin automatically, with a
+  running human-readable log of which branch holds what — no digging
+  through worktree metadata to find out what happened.
+- **One harness, reused across every project.** The generic base (this
+  repo, minus any project-specific content) never needs to be rebuilt per
+  project — only re-pointed at a new set of repos.
+
+## How it fits together — one harness, many projects
 
 ```
-aidlc-harness/
-├── .claude/                    the AIDLC harness itself (agents, stages, tools)
-├── plugins/
-│   └── auxiliary/                   the plugin source (build/install docs in its own README)
-├── stable-codebase/            shared, read-only repo mirror + reverse-engineering cache
-│                                (created the first time you run a ticket; see below)
-├── GOLF-123/                   one folder per ticket you work — created by you
-├── GOLF-345/
-└── ...
+aidlc-harness/                (this repo — the generic base)
+├── .claude/                  the AIDLC engine itself
+├── plugins/auxiliary/        the plugin — project-agnostic, reusable as-is
+├── aidlc/spaces/default/
+│   ├── memory/                org.md + team.md: generic defaults, no
+│   │                          project specifics — safe to keep as-is
+│   │                          across every project
+│   └── knowledge/             starts empty; onboarding fills this in
+│                              per project
+├── stable-codebase/          created by onboarding, per project
+└── <TICKET-KEY>/              created per ticket, per project
 ```
 
-## One-time setup
+Everything that's genuinely project-specific — the repo catalog, the
+architecture overview, coding standards, and any `project.md` entries —
+gets written *after* onboarding, never shipped with the harness. If you
+work multiple distinct projects out of copies of this repo, keep this base
+(harness + plugin + generic memory) identical across all of them, and let
+each project's own onboarding pass populate its own `knowledge/`,
+`stable-codebase/`, and `project.md` independently. (How you keep multiple
+projects' populated state separate — separate clones, separate branches,
+whatever fits your setup — is up to you; this repo doesn't prescribe it.)
 
-1. **Install `bun`** (needed to run the plugin tooling — the compiled `aidlc`
-   binary alone has a known issue resolving its own bundled compose-hook
-   template, so plugin `validate`/`build`/`sync` need the real `bun` runtime):
+## Initial setup (once, for this harness)
+
+1. **Install `bun`** — needed to run the plugin tooling. The compiled
+   `aidlc` binary alone has a known issue resolving its own bundled
+   compose-hook template, so plugin `validate`/`build`/`sync` need the real
+   `bun` runtime:
    ```powershell
    irm bun.sh/install.ps1 | iex
    ```
@@ -45,18 +94,67 @@ aidlc-harness/
    bun .claude/tools/aidlc-plugin.ts sync
    ```
    Confirm it landed clean: `aidlc doctor` should report 0 problems. This
-   composes the plugin's three stages + three agents into `.claude/` (tracked
-   via ownership sidecars, fully reversible with `sync --prune-missing`) —
-   you only need to redo this after you change the plugin's own source files.
-3. **Nothing else to fill in by hand.** The very first ticket you run
-   triggers `auxiliary-project-onboarding` automatically — it asks
-   you for each repo's role/scope, clones them all into `stable-codebase/`,
-   runs reverse-engineering, and writes the repo catalog plus an
-   architecture overview and coding-standards doc under
-   `aidlc/spaces/default/knowledge/`. Every ticket after that finds this
-   already done and skips straight to ticket intake.
+   composes the plugin's three stages + three agents into `.claude/`
+   (tracked via ownership sidecars, fully reversible with
+   `sync --prune-missing`). Redo this only after changing the plugin's own
+   source files — not per project, and not per ticket.
+3. **Nothing else to prepare by hand.** No repo list, no catalog, no
+   architecture doc — all of that gets gathered by onboarding, described
+   next.
 
-## How to use it — one ticket at a time
+## Starting on a project — onboarding
+
+"Onboarding" is the one-time-per-project step where the plugin learns what
+your project actually is. It runs automatically, inside the very first
+ticket you start for that project — there's no separate onboarding command.
+
+### If this is a brand-new project (repos already exist, never onboarded here)
+
+1. Create a folder for your first ticket and point a session at it (see
+   "Working a ticket" below) — same steps as any ticket.
+2. Run `/aidlc <TICKET-KEY> <description>` as usual.
+3. Before ticket intake runs, `auxiliary-project-onboarding` fires
+   automatically and walks you through:
+   - **What repos make up this project?** Give it a name, clone URL, and
+     branch per repo — or point it at an existing catalog-shaped file if
+     you already have one; it will still confirm the details with you.
+   - **What's each repo's role and scope?** In your own words — "this is
+     the backend API," "this is the customer-facing web app," and so on.
+     This is the part that isn't guessed: your description of intent is
+     combined with, not replaced by, what the code turns out to actually
+     do.
+   - It then clones every repo into a shared, read-only `stable-codebase/`
+     mirror and runs AIDLC's own reverse-engineering stage against it.
+   - Finally it writes an **architecture overview** and a **coding
+     standards** doc under `aidlc/spaces/default/knowledge/`, combining
+     your stated roles with what reverse-engineering found — and flags any
+     place the two disagree instead of silently picking one.
+   - Any proposed additions to `memory/project.md` or `memory/team.md` are
+     shown to you for confirmation before anything is written — onboarding
+     never edits those files silently.
+4. Once onboarding finishes, it marks itself done (a marker file under
+   `stable-codebase/`) and your first ticket continues straight into
+   normal ticket intake. Every ticket after this one finds onboarding
+   already complete and skips it instantly.
+
+### If this project has no code yet (greenfield)
+
+Onboarding's reverse-engineering step needs actual code to analyze, so for
+a truly greenfield project there's nothing to reverse-engineer yet. In that
+case, either let onboarding run with an empty or partial repo set (it will
+simply have less to synthesize), or skip straight to AIDLC's own normal
+greenfield flow (`workspace-detection` already handles "no existing code"
+correctly on its own) and let onboarding populate the architecture/standards
+docs later, once there's a first repo worth analyzing.
+
+### If this project has already been onboarded (by you, earlier, or by a teammate)
+
+Nothing to do — just start your ticket folder and go (see below).
+`auxiliary-project-onboarding` checks for its completion marker first and
+skips immediately if the project's `stable-codebase/` is already set up,
+so re-running it costs nothing.
+
+## Working a ticket, day to day
 
 ### The one rule that matters
 
@@ -71,26 +169,26 @@ at the harness root instead of in an isolated ticket folder.
 ```
 aidlc-harness/
 ├── stable-codebase/            shared, read-only mirror of every cataloged repo
-│   ├── golfler_asp_2/            at its release branch, refreshed manually
-│   ├── sgs-cts-angular/
+│   ├── <repo-a>/                 at its release branch, refreshed manually
+│   ├── <repo-b>/
 │   └── aidlc/spaces/default/codekb/...   shared reverse-engineering cache
 │
-├── GOLF-123/                   ticket folder — your clone + your AIDLC state
-│   ├── golfler_asp_2/            (only the repos classified "Change")
-│   ├── sgs-cts-angular/
-│   ├── repos.json                this ticket's clone manifest
+├── <TICKET-KEY>/                ticket folder — your clone + your AIDLC state
+│   ├── <repo-a>/                  (only the repos classified "Change")
+│   ├── repos.json                 this ticket's clone manifest
 │   └── aidlc/spaces/default/
-│       ├── intents/...            this ticket's own state — plans,
-│       │                          approvals, artifacts — fully isolated
+│       ├── intents/...             this ticket's own state — plans,
+│       │                           approvals, artifacts — fully isolated
 │       └── knowledge/repo-catalog.md
 │
-├── GOLF-345/                   a second ticket, fully isolated from GOLF-123
-└── GOLF-567/
+├── <ANOTHER-TICKET-KEY>/        a second ticket, fully isolated from the first
+└── ...
 ```
 
-`stable-codebase/` (repos + `codekb/`) is the only thing shared across
-tickets. Everything else — cloned repos, `repos.json`, AIDLC intent state —
-is per-ticket.
+`stable-codebase/` (repos + `codekb/`) and `aidlc/spaces/default/knowledge/`
+(the catalog, architecture overview, coding standards) are the only things
+shared across every ticket in a project. Everything else — cloned repos,
+`repos.json`, per-ticket AIDLC intent state — is isolated per ticket.
 
 ### Starting a new ticket
 
@@ -104,27 +202,24 @@ $env:CLAUDE_PROJECT_DIR = "D:\...\aidlc-harness\GOLF-123"
 claude
 
 # 3. Inside that session, run the workflow with the ticket key first
-/aidlc GOLF-123 add mco tee times across clubs
+/aidlc GOLF-123 <description of the ticket>
 ```
 
 `.claude/` stays physically inside `aidlc-harness/` throughout — only the
 *state and repos* redirect to `GOLF-123/`; skills/agents/hooks load normally.
 
-From here, the plugin takes over automatically. On the very first ticket
-you ever run, `auxiliary-project-onboarding` fires first — it asks
-you about your repos (role/scope per repo), builds the shared
-`stable-codebase/` mirror and reverse-engineering cache, and writes the
-architecture overview + coding standards doc. Every ticket after that finds
-onboarding already done and skips straight to `auxiliary-ticket-intake`,
-which:
+What happens next depends on whether this is the project's first ticket
+(onboarding fires first, see above) or a later one — in which case
+`auxiliary-ticket-intake` runs directly:
 - Verifies the session is actually pointed at a `GOLF-123`-named folder —
   refuses and tells you if it isn't (this is what stops two tickets' work
   from silently mixing together).
-- Fetches the real ticket from Jira.
+- Fetches the real ticket from your tracker (Jira, via the Atlassian MCP
+  connector).
 - Refreshes `stable-codebase/` if reachable, and seeds this ticket's
   `codekb/` from the shared cache if one already exists.
-- Shows a Change / Reference / Out-of-scope table for every cataloged repo —
-  confirm or adjust it.
+- Shows a Change / Reference / Out-of-scope table for every cataloged repo
+  — confirm or adjust it.
 - Clones the "Change" repos into `GOLF-123/`.
 - Hands off into AIDLC's normal pipeline (reverse-engineering, requirements,
   planning, construction...).
@@ -141,7 +236,7 @@ $env:AIDLC_PROJECT_DIR = "D:\...\aidlc-harness\GOLF-345"
 claude
 ```
 ```
-/aidlc GOLF-345 add multi-club dashboard filter
+/aidlc GOLF-345 <description of the second ticket>
 ```
 
 `GOLF-123` and `GOLF-345` never see each other's repos, branches, or state.
@@ -174,15 +269,33 @@ run `/aidlc-reverse-engineering` — AIDLC's own core stage, run in isolation,
 updating the shared `codekb/` incrementally. Every ticket started afterward
 seeds from it automatically.
 
+## Quick reference
+
+| I want to... | Do this |
+|---|---|
+| Set up this harness for the first time | Install `bun`, build + sync the plugin (see Initial setup) |
+| Start work on a project for the first time | Create a ticket folder, point a session at it, run `/aidlc <TICKET-KEY> <desc>` — onboarding fires automatically |
+| Start a ticket on an already-onboarded project | Same as above — onboarding detects it's already done and skips instantly |
+| Work two tickets at once | Separate folder + separate session + separate `AIDLC_PROJECT_DIR` per ticket |
+| Resume a ticket | Point a session at its existing folder, run `/aidlc` with no arguments |
+| Refresh the shared codebase mirror/analysis | See "Refreshing the shared stable codebase" above — manual, on demand |
+| See what's implemented in which branch | `implementation-log.md` in the ticket's record directory |
+| Check everything is wired correctly | `aidlc doctor` |
+
 ## Known gotchas
 
 - **Full clones, not shallow.** Cloning "Change" repos into a ticket folder
   pulls complete history, not `--depth 1` — budget time/disk for large repos.
-- **Windows + `cc_ios`.** That repo has a folder with a trailing space in its
-  name that breaks `git checkout` on Windows (`core.protectNTFS`). If a
-  ticket's scope includes it, expect the same manual workaround documented
-  in the repo catalog.
+- **Repos with unusual filenames can break `git checkout` on Windows** (e.g.
+  a path with a trailing space triggers `core.protectNTFS`). If onboarding
+  or a clone fails with an NTFS/checkout error, this is almost always the
+  cause — check for such a file at the source and rename it, or apply the
+  documented `core.protectNTFS=false` workaround locally.
 - **Forgetting to set `AIDLC_PROJECT_DIR`.** The stage's safety check catches
   this (refuses to proceed if the folder name doesn't match the ticket key)
   — start a fresh session per the steps above rather than fixing the path
   mid-session.
+- **A future `aidlc update` renaming a core stage this plugin depends on**
+  (e.g. `workspace-detection`, `code-generation`) would silently break the
+  plugin's `requires_stage` references. Run `aidlc doctor` after any future
+  update to catch this early.

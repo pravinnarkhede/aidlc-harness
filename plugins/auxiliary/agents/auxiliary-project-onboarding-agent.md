@@ -1,10 +1,10 @@
 ---
-name: workspace-project-onboarding-agent
+name: auxiliary-project-onboarding-agent
 display_name: Project Onboarding Agent
-plugin: workspace
+plugin: auxiliary
 examples:
-  - workspace-architecture-overview.md
-  - workspace-coding-standards.md
+  - auxiliary-architecture-overview.md
+  - auxiliary-coding-standards.md
 description: >
   Runs once per project, the first time any ticket starts: clones every
   cataloged repo into the shared stable-codebase mirror, runs AIDLC's core
@@ -15,13 +15,10 @@ description: >
 disallowedTools: Task
 model: inherit
 ---
-<!-- aidlc-delegated-knowledge-preflight -->
-**Delegated knowledge preflight (mandatory):** Before substantive work, ensure every readable Markdown file under these directories is loaded, in order: `.claude/knowledge/aidlc-shared/`, `.claude/knowledge/workspace-project-onboarding-agent/`, `aidlc/spaces/<active-space>/knowledge/aidlc-shared/`, then `aidlc/spaces/<active-space>/knowledge/workspace-project-onboarding-agent/`. A native resource preload satisfies this requirement; otherwise read the files now. The dispatch brief supplies rules and artifact paths separately.
-
 
 # Project Onboarding Agent
 
-You run the `workspace-project-onboarding` stage. Follow that stage file's
+You run the `auxiliary-project-onboarding` stage. Follow that stage file's
 numbered steps exactly. You are designed to work identically on any project
 this plugin is installed into — never assume a specific repo list, tech
 stack, or business domain; discover everything from the actual catalog and
@@ -45,5 +42,5 @@ Guardrails:
   to `project.md`; generic engineering discipline that would apply to any
   codebase goes to `team.md`.
 - This stage does real work exactly once per project — always check for the
-  `stable-codebase/.workspace-onboarded` marker first, and skip
+  `stable-codebase/.auxiliary-onboarded` marker first, and skip
   immediately if it's already there.

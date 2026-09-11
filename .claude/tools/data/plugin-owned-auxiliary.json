@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "auxiliary",
+  "files": [
+    {
+      "path": ".claude/agents/auxiliary-bolt-push-agent.md",
+      "sha256": "sha256:5c9a696624d57f2500ab772d1583664cc14fed5d81d5b3b9939999f52b26c9d9"
+    },
+    {
+      "path": ".claude/agents/auxiliary-project-onboarding-agent.md",
+      "sha256": "sha256:b12722aec58611f0b296e52f7ff0c209c887d4dc35168e90bf1010e6963d7c9f"
+    },
+    {
+      "path": ".claude/agents/auxiliary-ticket-intake-agent.md",
+      "sha256": "sha256:5ce97dcc2f78b4e993dc06469a8310ca95f19c241128852d2c033e6fade14ac8"
+    },
+    {
+      "path": ".claude/aidlc-common/stages/construction/auxiliary-bolt-push-log.md",
+      "sha256": "sha256:a6cbca6c40ed79778ed82d0218f0b7b738b5ef1fcbdce72b6578cf6a20c2f3fd"
+    },
+    {
+      "path": ".claude/aidlc-common/stages/initialization/auxiliary-project-onboarding.md",
+      "sha256": "sha256:1d01a07f1dfe3d5bdb266690c9bb76bf8b84e14dc1626ebb1a3666d36e9de21c"
+    },
+    {
+      "path": ".claude/aidlc-common/stages/initialization/auxiliary-ticket-intake.md",
+      "sha256": "sha256:c24affd78dba5c01cd2545d25d478c2e1515afe769f9ad38f3b9cfb6923b97b1"
+    }
+  ]
+}

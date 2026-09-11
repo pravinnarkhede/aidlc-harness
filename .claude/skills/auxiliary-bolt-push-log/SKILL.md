@@ -1,20 +1,20 @@
 ---
-name: workspace-bolt-push-log
+name: auxiliary-bolt-push-log
 generated-by: aidlc-runner-gen
 description: >
-  Run the workspace plugin `workspace-bolt-push-log` stage (construction phase) in isolation, without
-  advancing the main workflow. Packages `/aidlc --stage workspace-bolt-push-log --single`:
-  the engine emits one run-stage directive for workspace-bolt-push-log and its gate, the
+  Run the auxiliary plugin `auxiliary-bolt-push-log` stage (construction phase) in isolation, without
+  advancing the main workflow. Packages `/aidlc --stage auxiliary-bolt-push-log --single`:
+  the engine emits one run-stage directive for auxiliary-bolt-push-log and its gate, the
   conductor runs it, then the single-stage run commits a synthetic-id pair and
   stops. The main workflow's Current Stage is never touched.
 argument-hint: ""
 user-invocable: true
 ---
 
-# AI-DLC Stage Runner — workspace-bolt-push-log
+# AI-DLC Stage Runner — auxiliary-bolt-push-log
 
-Run the `workspace-bolt-push-log` stage from the workspace plugin on its own. This is opt-in packaging over
-`/aidlc --stage workspace-bolt-push-log --single`; the same stage is always reachable via
+Run the `auxiliary-bolt-push-log` stage from the auxiliary plugin on its own. This is opt-in packaging over
+`/aidlc --stage auxiliary-bolt-push-log --single`; the same stage is always reachable via
 that flag without this skill.
 
 ## Steps
@@ -22,10 +22,10 @@ that flag without this skill.
 1. Ask the engine for the single-stage directive:
 
    ```bash
-   aidlc engine orchestrate next --stage workspace-bolt-push-log --single
+   aidlc engine orchestrate next --stage auxiliary-bolt-push-log --single
    ```
 
-   The engine emits one `run-stage` directive for `workspace-bolt-push-log` (carrying the
+   The engine emits one `run-stage` directive for `auxiliary-bolt-push-log` (carrying the
    lead agent, the resolved consumes/produces paths, the rules and sensors in
    context, and — on this first directive — the conductor persona). Run the stage
    exactly as the directive describes; do not load the conductor persona by hand,
@@ -41,7 +41,7 @@ that flag without this skill.
 3. When the stage's work is done, commit the single-stage record:
 
    ```bash
-   aidlc engine orchestrate report --single --stage workspace-bolt-push-log --result completed
+   aidlc engine orchestrate report --single --stage auxiliary-bolt-push-log --result completed
    ```
 
    This records a STAGE_STARTED / STAGE_COMPLETED pair under a synthetic workflow

@@ -1,7 +1,7 @@
 ---
-slug: workspace-bolt-push-log
+slug: auxiliary-bolt-push-log
 name: Bolt Push and Log
-plugin: workspace
+plugin: auxiliary
 phase: construction
 execution: CONDITIONAL
 condition: >
@@ -9,12 +9,12 @@ condition: >
   ran in a git worktree (autonomous swarm / per-Bolt worktree mode). Skip
   (report --result skipped) when the unit did not run in an isolated
   worktree, since there is then no dedicated branch to push.
-lead_agent: workspace-bolt-push-agent
+lead_agent: auxiliary-bolt-push-agent
 support_agents: []
 mode: inline
 for_each: unit-of-work
 produces:
-  - workspace-implementation-log
+  - auxiliary-implementation-log
 consumes:
   - artifact: code-summary
     required: true
@@ -33,7 +33,7 @@ scopes:
   - refactor
   - classic
 inputs: "worktree info for the unit's Bolt (aidlc engine worktree info --slug <slug>); the unit's code-summary.md"
-outputs: "git push of the unit's bolt-<slug> branch to origin; workspace-implementation-log.md appended at the intent record root"
+outputs: "git push of the unit's bolt-<slug> branch to origin; auxiliary-implementation-log.md appended at the intent record root"
 ---
 
 # Bolt Push and Log
@@ -65,7 +65,7 @@ most recent `WORKTREE_CREATED` entry for that slug.
 
 - If the command exits non-zero (no worktree for this slug — the unit did
   not run under per-Bolt worktree/swarm mode): run
-  `aidlc engine orchestrate report --stage workspace-bolt-push-log --result skipped`
+  `aidlc engine orchestrate report --stage auxiliary-bolt-push-log --result skipped`
   and stop.
 - Otherwise capture `path`, `branch_name`.
 
@@ -91,7 +91,7 @@ code-summary` entry) for a one-line "what changed" summary.
 
 ### Step 5: Append to the running implementation log
 
-Append a section to `workspace-implementation-log.md` at the intent's record root
+Append a section to `auxiliary-implementation-log.md` at the intent's record root
 (create it with a one-line header the first time this stage runs for the
 intent; append to it on every subsequent unit — never overwrite prior
 sections):
@@ -111,4 +111,4 @@ this file surfaces it as one scannable running log.
 
 ### Step 6: Report completion
 
-Run `aidlc engine orchestrate report --stage workspace-bolt-push-log --result completed`.
+Run `aidlc engine orchestrate report --stage auxiliary-bolt-push-log --result completed`.

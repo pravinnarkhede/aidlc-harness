@@ -1,5 +1,5 @@
 {
-  "name": "workspace",
+  "name": "auxiliary",
   "version": "0.1.0",
   "description": "Turns a ticket into an isolated, onboarded, tracked workspace: onboards a new project once (roles, architecture, coding standards), then per ticket fetches it, refreshes a shared read-only repo mirror, clones the repos it impacts, and pushes+logs each construction unit's branch.",
   "author": { "name": "Pravin Narkhede" },

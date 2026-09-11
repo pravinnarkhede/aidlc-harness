@@ -1,24 +1,24 @@
 ---
-slug: workspace-ticket-intake
+slug: auxiliary-ticket-intake
 name: Jira Ticket Intake
-plugin: workspace
+plugin: auxiliary
 phase: initialization
 execution: CONDITIONAL
 condition: >
   Execute when the intent's originating request text (the WORKFLOW_STARTED
   audit entry / the "Request:" line recorded at intent creation) contains a
   ticket key matching [A-Z]{2,10}-\d+ (e.g. GOLF-123). If no ticket key is
-  found, call `aidlc engine orchestrate report --stage workspace-ticket-intake
+  found, call `aidlc engine orchestrate report --stage auxiliary-ticket-intake
   --result skipped` and stop.
-lead_agent: workspace-ticket-intake-agent
+lead_agent: auxiliary-ticket-intake-agent
 support_agents: []
 mode: inline
 produces:
-  - workspace-ticket-context
+  - auxiliary-ticket-context
 consumes: []
 requires_stage:
   - workspace-detection
-  - workspace-project-onboarding
+  - auxiliary-project-onboarding
 sensors: []
 scopes:
   - bugfix
@@ -30,7 +30,7 @@ scopes:
   - refactor
   - classic
 inputs: The intent's original request text (WORKFLOW_STARTED audit entry / aidlc-state.md header)
-outputs: "workspace-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present"
+outputs: "auxiliary-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present"
 ---
 
 # Jira Ticket Intake
@@ -84,7 +84,7 @@ there consistently with zero extra plumbing in this stage.
    entry, or the header of `<record>/aidlc-state.md` if the audit line has
    rolled off).
 2. Match against `[A-Z]{2,10}-\d+`. If no match: run
-   `aidlc engine orchestrate report --stage workspace-ticket-intake --result skipped`
+   `aidlc engine orchestrate report --stage auxiliary-ticket-intake --result skipped`
    and stop — the rest of this stage does not run.
 3. If matched, capture the ticket key (e.g. `GOLF-123`) for the remaining
    steps.
@@ -118,9 +118,9 @@ do not fall through to steps 3+ with fabricated data.
 Read `aidlc/spaces/<active-space>/knowledge/repo-catalog.md` — `{org, repos:
 [{name, url, branch, tags, role}]}`-shaped, where `role` is the user's own
 description of that repo's purpose/scope (recorded during onboarding — see
-`workspace-project-onboarding` Step 2). This file is **user-owned**, never
+`auxiliary-project-onboarding` Step 2). This file is **user-owned**, never
 touched by `aidlc update` or by uninstalling this plugin. `requires_stage`
-above guarantees `workspace-project-onboarding` has already run before
+above guarantees `auxiliary-project-onboarding` has already run before
 this step, so on a normal run the catalog already exists (onboarding either
 found it or created it on the very first ticket). If it's somehow still
 absent — the onboarding stage was skipped some other way, or the catalog was
@@ -248,7 +248,7 @@ Handle its exit codes:
 
 ### Step 9: Produce the ticket-context artifact
 
-Write `workspace-ticket-context.md` (this stage's declared `produces` artifact)
+Write `auxiliary-ticket-context.md` (this stage's declared `produces` artifact)
 under the intent's Initialization record directory, containing the parsed
 ticket fields from Step 2 (summary, description, acceptance criteria, labels,
 components, priority) so that `intent-capture`, `reverse-engineering`,
@@ -258,4 +258,4 @@ with.
 
 ### Step 10: Report completion
 
-Run `aidlc engine orchestrate report --stage workspace-ticket-intake --result completed`.
+Run `aidlc engine orchestrate report --stage auxiliary-ticket-intake --result completed`.

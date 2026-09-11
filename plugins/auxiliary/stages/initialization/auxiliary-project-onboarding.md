@@ -1,24 +1,24 @@
 ---
-slug: workspace-project-onboarding
+slug: auxiliary-project-onboarding
 name: Project Onboarding
-plugin: workspace
+plugin: auxiliary
 phase: initialization
 execution: CONDITIONAL
 condition: >
   Execute only on the very first ticket ever run against this project — i.e.
   when the shared `stable-codebase/` mirror (sibling to the harness root)
   does not yet exist, or exists but has no onboarding marker
-  (`stable-codebase/.workspace-onboarded`). Every ticket after the first
+  (`stable-codebase/.auxiliary-onboarded`). Every ticket after the first
   one finds the marker present and self-reports
-  `aidlc engine orchestrate report --stage workspace-project-onboarding
+  `aidlc engine orchestrate report --stage auxiliary-project-onboarding
   --result skipped` immediately — this stage does real work exactly once per
   project, never per ticket.
-lead_agent: workspace-project-onboarding-agent
+lead_agent: auxiliary-project-onboarding-agent
 support_agents: []
 mode: inline
 produces:
-  - workspace-architecture-overview
-  - workspace-coding-standards
+  - auxiliary-architecture-overview
+  - auxiliary-coding-standards
 consumes: []
 requires_stage:
   - workspace-detection
@@ -33,7 +33,7 @@ scopes:
   - refactor
   - classic
 inputs: The repo catalog at aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created here if absent)
-outputs: "stable-codebase/ populated for every cataloged repo; shared codekb/ built via core reverse-engineering; workspace-architecture-overview.md and workspace-coding-standards.md under aidlc/spaces/<active-space>/knowledge/; proposed memory/team.md + memory/project.md entries, written only after human confirmation; stable-codebase/.workspace-onboarded marker"
+outputs: "stable-codebase/ populated for every cataloged repo; shared codekb/ built via core reverse-engineering; auxiliary-architecture-overview.md and auxiliary-coding-standards.md under aidlc/spaces/<active-space>/knowledge/; proposed memory/team.md + memory/project.md entries, written only after human confirmation; stable-codebase/.auxiliary-onboarded marker"
 ---
 
 # Project Onboarding
@@ -47,7 +47,7 @@ or an entirely different project, because everything it discovers comes from
 reading the actual repos in the catalog, not from assumptions baked into
 this file.
 
-`workspace-ticket-intake` declares this stage in its own `requires_stage`,
+`auxiliary-ticket-intake` declares this stage in its own `requires_stage`,
 so on the very first ticket, onboarding always completes before ticket
 intake runs — meaning even ticket #1 gets a warm, freshly-built knowledge
 base to seed from, not just ticket #2 onward.
@@ -56,15 +56,15 @@ base to seed from, not just ticket #2 onward.
 
 ### Step 1: Detect first-run
 
-Check for `stable-codebase/.workspace-onboarded` (sibling to the harness
+Check for `stable-codebase/.auxiliary-onboarded` (sibling to the harness
 root, independent of any per-ticket `AIDLC_PROJECT_DIR` redirect — same
-location `workspace-ticket-intake` uses for the shared mirror). If present,
-run `aidlc engine orchestrate report --stage workspace-project-onboarding
+location `auxiliary-ticket-intake` uses for the shared mirror). If present,
+run `aidlc engine orchestrate report --stage auxiliary-project-onboarding
 --result skipped` and stop — nothing below this step runs.
 
 ### Step 2: Load or create the repo catalog — with the user's own role/scope guidance
 
-Same catalog `workspace-ticket-intake` Step 3 reads:
+Same catalog `auxiliary-ticket-intake` Step 3 reads:
 `aidlc/spaces/<active-space>/knowledge/repo-catalog.md` — `{org, repos:
 [{name, url, branch, tags, role}]}`-shaped table. If it doesn't exist yet,
 this is the first place it gets created — and for a project that spans
@@ -152,11 +152,11 @@ files; this stage only ever proposes, the human decides what actually lands.
 
 ### Step 7: Mark onboarding complete
 
-Write `stable-codebase/.workspace-onboarded` (a single ISO-8601 timestamp
-line). Every later ticket's own `workspace-project-onboarding` stage
+Write `stable-codebase/.auxiliary-onboarded` (a single ISO-8601 timestamp
+line). Every later ticket's own `auxiliary-project-onboarding` stage
 instance finds this immediately at Step 1 and skips, so this stage's real
 cost is paid exactly once per project.
 
 ### Step 8: Report completion
 
-Run `aidlc engine orchestrate report --stage workspace-project-onboarding --result completed`.
+Run `aidlc engine orchestrate report --stage auxiliary-project-onboarding --result completed`.

@@ -1,12 +1,12 @@
 # aidlc-harness
 
 This repo is an AWS AI-DLC (AIDLC) install, extended with a plugin —
-`plugins/workspace/` — that gives the `/aidlc` workflow a "ticket in,
+`plugins/auxiliary/` — that gives the `/aidlc` workflow a "ticket in,
 workspace ready" front door: point it at a Jira ticket key and it fetches the
 ticket, clones the repos it impacts into a dedicated folder, seeds a
 reverse-engineering cache, and hands off into AIDLC's normal
 requirements → design → construction pipeline. No separate command, no core
-AIDLC file ever hand-edited — see `plugins/workspace/README.md` for how the
+AIDLC file ever hand-edited — see `plugins/auxiliary/README.md` for how the
 plugin itself is built.
 
 This file is the practical guide: what's here, how to set it up once, and how
@@ -18,7 +18,7 @@ to actually work a ticket day to day.
 aidlc-harness/
 ├── .claude/                    the AIDLC harness itself (agents, stages, tools)
 ├── plugins/
-│   └── workspace/                   the plugin source (build/install docs in its own README)
+│   └── auxiliary/                   the plugin source (build/install docs in its own README)
 ├── stable-codebase/            shared, read-only repo mirror + reverse-engineering cache
 │                                (created the first time you run a ticket; see below)
 ├── GOLF-123/                   one folder per ticket you work — created by you
@@ -36,12 +36,12 @@ aidlc-harness/
    ```
 2. **Build and sync the plugin** (from inside `aidlc-harness/`):
    ```
-   bun .claude/tools/aidlc-plugin-validate.ts plugins/workspace
-   bun .claude/tools/aidlc-plugin-build.ts plugins/workspace claude plugins/workspace/dist/claude
+   bun .claude/tools/aidlc-plugin-validate.ts plugins/auxiliary
+   bun .claude/tools/aidlc-plugin-build.ts plugins/auxiliary claude plugins/auxiliary/dist/claude
    ```
    Then, with `CLAUDE_PLUGIN_ROOT` pointed at that build output, sync it in:
    ```powershell
-   $env:CLAUDE_PLUGIN_ROOT = "D:\...\aidlc-harness\plugins\workspace\dist\claude"
+   $env:CLAUDE_PLUGIN_ROOT = "D:\...\aidlc-harness\plugins\auxiliary\dist\claude"
    bun .claude/tools/aidlc-plugin.ts sync
    ```
    Confirm it landed clean: `aidlc doctor` should report 0 problems. This
@@ -49,7 +49,7 @@ aidlc-harness/
    via ownership sidecars, fully reversible with `sync --prune-missing`) —
    you only need to redo this after you change the plugin's own source files.
 3. **Nothing else to fill in by hand.** The very first ticket you run
-   triggers `workspace-project-onboarding` automatically — it asks
+   triggers `auxiliary-project-onboarding` automatically — it asks
    you for each repo's role/scope, clones them all into `stable-codebase/`,
    runs reverse-engineering, and writes the repo catalog plus an
    architecture overview and coding-standards doc under
@@ -111,11 +111,11 @@ claude
 *state and repos* redirect to `GOLF-123/`; skills/agents/hooks load normally.
 
 From here, the plugin takes over automatically. On the very first ticket
-you ever run, `workspace-project-onboarding` fires first — it asks
+you ever run, `auxiliary-project-onboarding` fires first — it asks
 you about your repos (role/scope per repo), builds the shared
 `stable-codebase/` mirror and reverse-engineering cache, and writes the
 architecture overview + coding standards doc. Every ticket after that finds
-onboarding already done and skips straight to `workspace-ticket-intake`,
+onboarding already done and skips straight to `auxiliary-ticket-intake`,
 which:
 - Verifies the session is actually pointed at a `GOLF-123`-named folder —
   refuses and tells you if it isn't (this is what stops two tickets' work
@@ -154,7 +154,7 @@ check `aidlc engine intent list` if you're not sure what's in flight there).
 
 ### During construction — branches get pushed and logged automatically
 
-Once a ticket reaches construction, `workspace-bolt-push-log` runs after
+Once a ticket reaches construction, `auxiliary-bolt-push-log` runs after
 each unit's code-generation: pushes that unit's `bolt-<slug>` branch to
 origin and appends an entry to `implementation-log.md` in the ticket's record
 directory — repo, branch, base branch, one-line summary.

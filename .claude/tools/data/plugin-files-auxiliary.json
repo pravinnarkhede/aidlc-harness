@@ -1,5 +1,5 @@
 {
   "schema_version": 1,
-  "plugin": "workspace",
+  "plugin": "auxiliary",
   "knowledge": []
 }

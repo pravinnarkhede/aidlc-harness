@@ -1,0 +1,35 @@
+README.md
+  s_fcbc7b34e42f37::t_e598288151a61f 157-194
+  s_fcbc7b34e42f37::t_e5818706acbcf1 342-351
+.claude/tools/data/plugin-owned-auxiliary.json
+  s_fcbc7b34e42f37::t_beb21eed394009 7,11,15,19,23,27
+plugins/auxiliary/stages/initialization/auxiliary-project-onboarding.md
+  s_fcbc7b34e42f37::t_96f48d5239ab25 69-80
+.claude/aidlc-common/stages/initialization/auxiliary-project-onboarding.md
+  s_fcbc7b34e42f37::t_beb21eed394009 69-80
+.gitignore
+  s_fcbc7b34e42f37::t_c93c1f812917d2 86-102
+.claude/tools/data/plugin-compose-auxiliary.json
+  s_fcbc7b34e42f37::t_beb21eed394009 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b5ad9d93cb79328094a6f2bc33f1831d9c39bd90",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

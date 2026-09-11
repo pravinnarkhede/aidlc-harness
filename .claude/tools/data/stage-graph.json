@@ -92,8 +92,104 @@
     "sensors_applicable": []
   },
   {
-    "slug": "state-init",
+    "slug": "auxiliary-project-onboarding",
     "number": "0.3",
+    "name": "Project Onboarding",
+    "plugin": "auxiliary",
+    "phase": "initialization",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "auxiliary-project-onboarding-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "produces": [
+      "auxiliary-architecture-overview",
+      "auxiliary-coding-standards"
+    ],
+    "consumes": [],
+    "requires_stage": [
+      "workspace-detection"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
+    "inputs": "The repo catalog at aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created here if absent)",
+    "outputs": "stable-codebase/ populated for every cataloged repo; shared codekb/ built via core reverse-engineering; auxiliary-architecture-overview.md and auxiliary-coding-standards.md under aidlc/spaces/<active-space>/knowledge/; proposed memory/team.md + memory/project.md entries, written only after human confirmation; stable-codebase/.auxiliary-onboarded marker",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      }
+    ],
+    "sensors_applicable": []
+  },
+  {
+    "slug": "auxiliary-ticket-intake",
+    "number": "0.4",
+    "name": "Jira Ticket Intake",
+    "plugin": "auxiliary",
+    "phase": "initialization",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "auxiliary-ticket-intake-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "produces": [
+      "auxiliary-ticket-context"
+    ],
+    "consumes": [],
+    "requires_stage": [
+      "workspace-detection",
+      "auxiliary-project-onboarding"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
+    "inputs": "The intent's original request text (WORKFLOW_STARTED audit entry / aidlc-state.md header)",
+    "outputs": "auxiliary-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      }
+    ],
+    "sensors_applicable": []
+  },
+  {
+    "slug": "state-init",
+    "number": "0.5",
     "name": "State Initialization",
     "phase": "initialization",
     "execution": "ALWAYS",
@@ -2446,8 +2542,69 @@
     ]
   },
   {
-    "slug": "build-and-test",
+    "slug": "auxiliary-bolt-push-log",
     "number": "3.6",
+    "name": "Bolt Push and Log",
+    "plugin": "auxiliary",
+    "phase": "construction",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "auxiliary-bolt-push-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "for_each": "unit-of-work",
+    "produces": [
+      "auxiliary-implementation-log"
+    ],
+    "consumes": [
+      {
+        "artifact": "code-summary",
+        "required": true
+      },
+      {
+        "artifact": "unit-of-work",
+        "required": true
+      }
+    ],
+    "requires_stage": [
+      "code-generation"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
+    "inputs": "worktree info for the unit's Bolt (aidlc engine worktree info --slug <slug>); the unit's code-summary.md",
+    "outputs": "git push of the unit's bolt-<slug> branch to origin; auxiliary-implementation-log.md appended at the intent record root",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/phases/construction.md",
+        "scope": "phase"
+      }
+    ],
+    "sensors_applicable": []
+  },
+  {
+    "slug": "build-and-test",
+    "number": "3.7",
     "name": "Build and Test",
     "phase": "construction",
     "execution": "ALWAYS",
@@ -2549,7 +2706,7 @@
   },
   {
     "slug": "ci-pipeline",
-    "number": "3.7",
+    "number": "3.8",
     "name": "CI Pipeline",
     "phase": "construction",
     "execution": "CONDITIONAL",

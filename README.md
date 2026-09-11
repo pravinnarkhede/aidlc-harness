@@ -74,14 +74,31 @@ each project's own onboarding pass populate its own `knowledge/`,
 projects' populated state separate — separate clones, separate branches,
 whatever fits your setup — is up to you; this repo doesn't prescribe it.)
 
+## Prerequisites (once per machine, before cloning anything)
+
+Cloning this repo is not enough by itself — it only carries the project
+configuration (`.claude/`) that the `aidlc` CLI reads; the CLI and runtime
+themselves are a separate, one-time, per-machine install:
+
+| Tool | Why | Install |
+|---|---|---|
+| `aidlc` CLI | Everything in this repo runs through it | **Windows:** `irm https://github.com/awslabs/aidlc-workflows/releases/latest/download/install.ps1 \| iex` — **macOS/Linux/WSL:** `curl -fsSL https://github.com/awslabs/aidlc-workflows/releases/latest/download/install.sh \| sh` |
+| Claude Code CLI (`claude`) | Runs the actual sessions | `npm install -g @anthropic-ai/claude-code` (Node 22+; same command on all three OSes) |
+| `git` | Cloning/branching repos | Usually pre-installed on macOS/Linux; on Windows, `winget install Git.Git` |
+| `bun` | Needed only for this harness's `auxiliary` plugin tooling (`validate`/`build`/`sync`) — the compiled `aidlc` binary alone can't resolve its own bundled compose-hook template | **Windows:** `irm bun.sh/install.ps1 \| iex` — **macOS/Linux:** `curl -fsSL https://bun.sh/install \| bash` |
+| AWS credentials + Bedrock model access | The shipped `.claude/settings.json` defaults the orchestrator to Bedrock (`us-east-1`) | Not a package — one-time AWS account/IAM setup. Override region/model in `.claude/settings.local.json` if needed |
+| Atlassian MCP connector | Needed for the `auxiliary` plugin's Jira ticket fetch | Not a package — one-time authorization inside Claude Code (`/mcp`) |
+
+`aidlc` and Claude Code are per-machine, done once, and cover every project
+you clone afterward — you don't reinstall them per repo. `bun` is specific
+to this harness's plugin tooling, so it's listed again below for clarity.
+
 ## Initial setup (once, for this harness)
 
-1. **Install `bun`** — needed to run the plugin tooling. The compiled
-   `aidlc` binary alone has a known issue resolving its own bundled
-   compose-hook template, so plugin `validate`/`build`/`sync` need the real
-   `bun` runtime:
+1. **Confirm `bun` is installed** (see Prerequisites above) — needed to run
+   the plugin tooling:
    ```powershell
-   irm bun.sh/install.ps1 | iex
+   bun --version
    ```
 2. **Build and sync the plugin** (from inside `aidlc-harness/`):
    ```

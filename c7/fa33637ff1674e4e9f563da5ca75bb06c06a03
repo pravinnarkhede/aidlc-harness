@@ -1,0 +1,24 @@
+README.md
+  s_fcbc7b34e42f37::t_ac62353ffd37dc 77-95,98-99,101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c7fa33637ff1674e4e9f563da5ca75bb06c06a03",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

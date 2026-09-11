@@ -11,13 +11,9 @@
 
 ## Way of Working
 
-- The backend (`golfler_asp_2`) owns the API contract for every consumer
-  repo (`golfler_pos_2`, `sgs-cts-angular`, `cc_mobile_pos`, `cc_api_manager`,
-  `cc_membership_portal`, `cc_ios`, `cc_android`). Before changing an API:
-  identify existing consumers, confirm whether backward compatibility is
-  required, implement and verify the backend change first, only then update
-  consumers. Do not let clients assume API shape before the backend contract
-  is confirmed.
+<!-- Project-specific specialisation. Example: -->
+<!-- This monorepo requires package-scoped branch names and a package owner -->
+<!-- review in addition to the team's normal merge policy. -->
 
 ## Walking Skeleton
 
@@ -27,10 +23,7 @@
 
 ## Testing Posture
 
-- Regression focus areas across this platform: payments, orders, tee times,
-  activities, events, F&B, authentication, authorization, and any other
-  high-usage API or frequently used client flow. Changes touching these
-  need explicit regression scenarios identified before implementation.
+<!-- Project-specific specialisation. -->
 
 ## Deployment
 
@@ -55,9 +48,9 @@
 
 ## Forbidden
 
-- NEVER change the `golfler_asp_2` database schema just because a new
-  table/model would be architecturally cleaner — only when the feature
-  actually requires it.
+<!-- Populated by practices-discovery affirmation gate. -->
+<!-- Format: NEVER [behavior] (affirmed [date]) -->
+<!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
 
 ## Mandated
 

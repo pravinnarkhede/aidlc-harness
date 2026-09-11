@@ -1,0 +1,24 @@
+aidlc/spaces/default/knowledge/repo-catalog.md
+  s_fcbc7b34e42f37::t_3bd4e6abcd5de0 1-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "72fb5da64bb9e16192d35b9125f8c0a303d2a5fd",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_fcbc7b34e42f37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22ac8094-5f7f-4e43-93e0-3f0100522aaa",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

@@ -185,17 +185,17 @@ Source of truth: one file per scope under `.claude/scopes/aidlc-<name>.md` (iden
 
 | Scope          | Depth         | TestStrategy | EXECUTE / Total |
 |----------------|---------------|--------------|-----------------|
-| bugfix         | Minimal       | (default)    | 11 / 35         |
-| classic        | Standard      | (default)    | 28 / 35         |
-| enterprise     | Comprehensive | (default)    | 35 / 35         |
-| express        | Minimal       | (default)    | 12 / 35         |
-| feature        | Standard      | (default)    | 35 / 35         |
-| infra          | Standard      | (default)    | 14 / 35         |
-| mvp            | Standard      | (default)    | 25 / 35         |
-| poc            | Minimal       | (default)    | 9 / 35          |
-| refactor       | Minimal       | (default)    | 12 / 35         |
-| security-patch | Minimal       | (default)    | 12 / 35         |
-| workshop       | Standard      | Minimal      | 27 / 35         |
+| bugfix         | Minimal       | (default)    | 12 / 36         |
+| classic        | Standard      | (default)    | 29 / 36         |
+| enterprise     | Comprehensive | (default)    | 36 / 36         |
+| express        | Minimal       | (default)    | 13 / 36         |
+| feature        | Standard      | (default)    | 36 / 36         |
+| infra          | Standard      | (default)    | 15 / 36         |
+| mvp            | Standard      | (default)    | 26 / 36         |
+| poc            | Minimal       | (default)    | 10 / 36         |
+| refactor       | Minimal       | (default)    | 13 / 36         |
+| security-patch | Minimal       | (default)    | 13 / 36         |
+| workshop       | Standard      | Minimal      | 28 / 36         |
 
 <!-- END: compiled scope grid -->
 
@@ -212,7 +212,8 @@ The engine reads the compiled `data/stage-graph.json` directly for all routing; 
 | workspace-scaffold | 0.1 | Workspace Scaffold | Initialization | ALWAYS | (orchestrator) | — | inline |
 | workspace-detection | 0.2 | Workspace Detection | Initialization | ALWAYS | (orchestrator) | — | inline |
 | state-init | 0.3 | State Initialization | Initialization | ALWAYS | (orchestrator) | — | inline |
-| jira-bridge-ticket-intake | 0.4 | Jira Ticket Intake | Initialization | CONDITIONAL | jira-bridge-ticket-intake-agent | — | inline |
+| workspace-project-onboarding | 0.4 | Project Onboarding | Initialization | CONDITIONAL | workspace-project-onboarding-agent | — | inline |
+| workspace-ticket-intake | 0.5 | Jira Ticket Intake | Initialization | CONDITIONAL | workspace-ticket-intake-agent | — | inline |
 | intent-capture | 1.1 | Intent Capture & Framing | Ideation | ALWAYS | aidlc-product-agent | aidlc-architect-agent | inline |
 | market-research | 1.2 | Market Research | Ideation | CONDITIONAL | aidlc-product-agent | — | inline |
 | feasibility | 1.3 | Feasibility & Constraints | Ideation | CONDITIONAL | aidlc-architect-agent | aidlc-aws-platform-agent, aidlc-compliance-agent | inline |
@@ -236,7 +237,7 @@ The engine reads the compiled `data/stage-graph.json` directly for all routing; 
 | code-generation | 3.5 | Code Generation | Construction | ALWAYS | aidlc-developer-agent | — | subagent |
 | build-and-test | 3.6 | Build and Test | Construction | ALWAYS | aidlc-quality-agent | aidlc-devsecops-agent | inline |
 | ci-pipeline | 3.7 | CI Pipeline | Construction | CONDITIONAL | aidlc-pipeline-deploy-agent | — | inline |
-| jira-bridge-bolt-push-log | 3.8 | Bolt Push and Log | Construction | CONDITIONAL | jira-bridge-bolt-push-agent | — | inline |
+| workspace-bolt-push-log | 3.8 | Bolt Push and Log | Construction | CONDITIONAL | workspace-bolt-push-agent | — | inline |
 | deployment-pipeline | 4.1 | Deployment Pipeline | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | — | inline |
 | environment-provisioning | 4.2 | Environment Provisioning | Operation | CONDITIONAL | aidlc-aws-platform-agent | aidlc-devsecops-agent, aidlc-compliance-agent | inline |
 | deployment-execution | 4.3 | Deployment Execution | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-developer-agent | inline |

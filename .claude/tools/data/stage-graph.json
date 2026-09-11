@@ -139,18 +139,19 @@
     "sensors_applicable": []
   },
   {
-    "slug": "jira-bridge-ticket-intake",
+    "slug": "workspace-project-onboarding",
     "number": "0.4",
-    "name": "Jira Ticket Intake",
-    "plugin": "jira-bridge",
+    "name": "Project Onboarding",
+    "plugin": "workspace",
     "phase": "initialization",
     "execution": "CONDITIONAL",
     "condition": "",
-    "lead_agent": "jira-bridge-ticket-intake-agent",
+    "lead_agent": "workspace-project-onboarding-agent",
     "support_agents": [],
     "mode": "inline",
     "produces": [
-      "jira-bridge-ticket-context"
+      "workspace-architecture-overview",
+      "workspace-coding-standards"
     ],
     "consumes": [],
     "requires_stage": [
@@ -167,8 +168,56 @@
       "refactor",
       "classic"
     ],
+    "inputs": "The repo catalog at aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created here if absent)",
+    "outputs": "stable-codebase/ populated for every cataloged repo; shared codekb/ built via core reverse-engineering; workspace-architecture-overview.md and workspace-coding-standards.md under aidlc/spaces/<active-space>/knowledge/; proposed memory/team.md + memory/project.md entries, written only after human confirmation; stable-codebase/.workspace-onboarded marker",
+    "rules_in_context": [
+      {
+        "path": "aidlc/spaces/default/memory/org.md",
+        "scope": "org"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/team.md",
+        "scope": "team"
+      },
+      {
+        "path": "aidlc/spaces/default/memory/project.md",
+        "scope": "project"
+      }
+    ],
+    "sensors_applicable": []
+  },
+  {
+    "slug": "workspace-ticket-intake",
+    "number": "0.5",
+    "name": "Jira Ticket Intake",
+    "plugin": "workspace",
+    "phase": "initialization",
+    "execution": "CONDITIONAL",
+    "condition": "",
+    "lead_agent": "workspace-ticket-intake-agent",
+    "support_agents": [],
+    "mode": "inline",
+    "produces": [
+      "workspace-ticket-context"
+    ],
+    "consumes": [],
+    "requires_stage": [
+      "workspace-detection",
+      "workspace-project-onboarding"
+    ],
+    "sensors": [],
+    "scopes": [
+      "bugfix",
+      "feature",
+      "mvp",
+      "express",
+      "security-patch",
+      "enterprise",
+      "refactor",
+      "classic"
+    ],
     "inputs": "The intent's original request text (WORKFLOW_STARTED audit entry / aidlc-state.md header)",
-    "outputs": "jira-bridge-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present",
+    "outputs": "workspace-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present",
     "rules_in_context": [
       {
         "path": "aidlc/spaces/default/memory/org.md",
@@ -2697,19 +2746,19 @@
     ]
   },
   {
-    "slug": "jira-bridge-bolt-push-log",
+    "slug": "workspace-bolt-push-log",
     "number": "3.8",
     "name": "Bolt Push and Log",
-    "plugin": "jira-bridge",
+    "plugin": "workspace",
     "phase": "construction",
     "execution": "CONDITIONAL",
     "condition": "",
-    "lead_agent": "jira-bridge-bolt-push-agent",
+    "lead_agent": "workspace-bolt-push-agent",
     "support_agents": [],
     "mode": "inline",
     "for_each": "unit-of-work",
     "produces": [
-      "jira-bridge-implementation-log"
+      "workspace-implementation-log"
     ],
     "consumes": [
       {
@@ -2736,7 +2785,7 @@
       "classic"
     ],
     "inputs": "worktree info for the unit's Bolt (aidlc engine worktree info --slug <slug>); the unit's code-summary.md",
-    "outputs": "git push of the unit's bolt-<slug> branch to origin; jira-bridge-implementation-log.md appended at the intent record root",
+    "outputs": "git push of the unit's bolt-<slug> branch to origin; workspace-implementation-log.md appended at the intent record root",
     "rules_in_context": [
       {
         "path": "aidlc/spaces/default/memory/org.md",

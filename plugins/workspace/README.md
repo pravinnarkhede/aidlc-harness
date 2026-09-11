@@ -1,21 +1,34 @@
-# jira-bridge
+# workspace
 
 An AIDLC plugin that gives the `/aidlc` workflow the same "ticket in, workspace
 ready" front door the team's in-house looper harness already has — without a
 new command and without editing any AIDLC core file.
 
+This plugin is project-generic — nothing in it hardcodes a specific
+codebase, repo list, or domain. Point it at any multi-repo project; the
+first ticket you run walks you through describing your own repos.
+
 ## What it adds
 
-- **`jira-bridge-ticket-intake`** (Initialization phase, conditional on a ticket key
+- **`workspace-project-onboarding`** (Initialization phase, runs exactly
+  once — the very first ticket ever started for a project): asks you for
+  each repo's role/scope up front, clones them all into a shared
+  `stable-codebase/` mirror, runs AIDLC's own reverse-engineering stage
+  against it, and synthesizes an architecture overview + coding standards
+  doc + proposed memory entries from what it finds — combining your stated
+  intent with what the code actually does. Every ticket after the first
+  finds this already done and skips it instantly.
+- **`workspace-ticket-intake`** (Initialization phase, conditional on a ticket key
   like `GOLF-123` appearing in the request): fetches the ticket via the
-  Atlassian MCP connector, refreshes a read-only `stable-codebase/` mirror of
-  the whole platform on every run, classifies and clones the repos the ticket
-  impacts (reusing the team's existing `project-structure.md` repo catalog),
-  and records the parsed ticket content for downstream planning stages.
-- **`jira-bridge-bolt-push-log`** (Construction phase, per unit of work): after a
+  Atlassian MCP connector, refreshes the `stable-codebase/` mirror, seeds
+  this ticket's reverse-engineering cache from the shared one, classifies
+  and clones the repos the ticket impacts (using the catalog onboarding
+  built), and records the parsed ticket content for downstream planning
+  stages.
+- **`workspace-bolt-push-log`** (Construction phase, per unit of work): after a
   unit's code-generation finishes in its own Bolt worktree, pushes that
   branch to origin and appends a human-readable entry to a running
-  `jira-bridge-implementation-log.md` — repo, branch, base branch, one-line summary —
+  `workspace-implementation-log.md` — repo, branch, base branch, one-line summary —
   so you can see what's implemented in which branch without digging through
   `worktree-meta.json`.
 
@@ -47,7 +60,7 @@ plugin) executes. So per ticket:
    skills/agents/hooks still load normally).
 3. Run `/aidlc GOLF-123 <description>` inside that session.
 
-From here on, `jira-bridge-ticket-intake` operates entirely against whatever
+From here on, `workspace-ticket-intake` operates entirely against whatever
 `resolveProjectDir()` returns for the session — which is now `GOLF-123/` —
 so the ticket's repos and its AIDLC state land there consistently with no
 further steps. The stage also verifies this precondition was actually
@@ -57,7 +70,7 @@ clone/state into another ticket's folder or into the harness root.
 
 ## Refreshing the shared reference analysis (manual, on-demand)
 
-`jira-bridge-ticket-intake` seeds each new ticket's `codekb/` from a shared,
+`workspace-ticket-intake` seeds each new ticket's `codekb/` from a shared,
 harness-level reverse-engineering cache so every ticket after the first one
 starts from a warm analysis instead of a full rescan — but it never
 refreshes that shared cache itself, by design (an on-every-ticket refresh
@@ -65,7 +78,7 @@ would make ticket intake slower, not faster). Refresh it yourself, whenever
 you want, with no scheduler required:
 
 1. Refresh the mirror's repos to their release-branch tips (the same
-   fetch/checkout/reset routine `jira-bridge-ticket-intake` Step 4 runs
+   fetch/checkout/reset routine `workspace-ticket-intake` Step 4 runs
    automatically on every ticket anyway, so this is usually already current):
    ```
    git -C aidlc-harness/stable-codebase/<repo> fetch --depth 1 origin <branch>
@@ -102,8 +115,17 @@ sync --prune-missing` cleanly removes everything this plugin added.
 ## User-owned files this plugin depends on (not shipped, not composed)
 
 - `aidlc/spaces/<space>/knowledge/repo-catalog.md` — the repo/branch/clone-URL
-  catalog, seeded once from `looper-code/artifacts/project-structure.md` if
-  reachable, otherwise created as a placeholder for you to fill in.
+  catalog, `{org, repos: [{name, url, branch, tags, role}]}`-shaped. Built
+  once by `workspace-project-onboarding` (the first ticket run against a
+  new project) by asking *you* for each repo's role/scope up front — never
+  guessed from the repo name or inferred from code alone — optionally
+  seeded from an existing catalog-shaped file (e.g.
+  `looper-code/artifacts/project-structure.md`) if you point it at one, but
+  always confirmed with you rather than trusted silently.
+- `aidlc/spaces/<space>/knowledge/architecture-overview.md` and
+  `coding-standards.md` — also written once by `workspace-project-onboarding`,
+  combining your stated repo roles with what reverse-engineering actually
+  finds in the code.
 - `<ticket-root>/repos.json` (e.g. `aidlc-harness/GOLF-123/repos.json`) —
   read by the existing core `aidlc-workspace-sync.ts` tool; this plugin only
   writes it.

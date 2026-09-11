@@ -11,6 +11,11 @@
 <!-- We use GitHub Flow with feature branches. Branches live 3-5 days max. -->
 <!-- Hotfixes branch from main and merge back via expedited review. -->
 
+- Follow existing naming, folder structure, DI, logging, exception-handling,
+  and API-response conventions already present in the repo being touched —
+  inspect nearby code before writing new code, rather than introducing a new
+  pattern the codebase doesn't already use.
+
 ## Walking Skeleton
 
 <!-- Affirmed during practices-discovery. Example: -->
@@ -36,6 +41,16 @@
 ## Forbidden
 
 <!-- Team-specific forbidden patterns -->
+
+- NEVER silently change an API contract another repo/service consumes —
+  document old contract, new contract, reason, affected consumers, and
+  migration/backward-compatibility strategy before changing it.
+- NEVER turn a feature change into a "while we're here" cleanup — no
+  renaming unrelated classes, no unrelated refactors, no reformatting whole
+  files, no unrelated response/API changes.
+- NEVER commit across independent repos or move files between them when a
+  change touches multiple cloned repos at once — keep commits scoped to the
+  repo they actually belong to.
 
 ## Mandated
 

@@ -1,23 +1,24 @@
 ---
-slug: jira-bridge-ticket-intake
+slug: workspace-ticket-intake
 name: Jira Ticket Intake
-plugin: jira-bridge
+plugin: workspace
 phase: initialization
 execution: CONDITIONAL
 condition: >
   Execute when the intent's originating request text (the WORKFLOW_STARTED
   audit entry / the "Request:" line recorded at intent creation) contains a
   ticket key matching [A-Z]{2,10}-\d+ (e.g. GOLF-123). If no ticket key is
-  found, call `aidlc engine orchestrate report --stage jira-bridge-ticket-intake
+  found, call `aidlc engine orchestrate report --stage workspace-ticket-intake
   --result skipped` and stop.
-lead_agent: jira-bridge-ticket-intake-agent
+lead_agent: workspace-ticket-intake-agent
 support_agents: []
 mode: inline
 produces:
-  - jira-bridge-ticket-context
+  - workspace-ticket-context
 consumes: []
 requires_stage:
   - workspace-detection
+  - workspace-project-onboarding
 sensors: []
 scopes:
   - bugfix
@@ -29,7 +30,7 @@ scopes:
   - refactor
   - classic
 inputs: The intent's original request text (WORKFLOW_STARTED audit entry / aidlc-state.md header)
-outputs: "jira-bridge-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present"
+outputs: "workspace-ticket-context.md (parsed ticket fields); <ticket-root>/repos.json; aidlc/spaces/<active-space>/knowledge/repo-catalog.md (created on first run if absent); cloned/refreshed repos under the active ticket root; codekb seeded from the shared stable-codebase reference analysis, if present"
 ---
 
 # Jira Ticket Intake
@@ -83,7 +84,7 @@ there consistently with zero extra plumbing in this stage.
    entry, or the header of `<record>/aidlc-state.md` if the audit line has
    rolled off).
 2. Match against `[A-Z]{2,10}-\d+`. If no match: run
-   `aidlc engine orchestrate report --stage jira-bridge-ticket-intake --result skipped`
+   `aidlc engine orchestrate report --stage workspace-ticket-intake --result skipped`
    and stop — the rest of this stage does not run.
 3. If matched, capture the ticket key (e.g. `GOLF-123`) for the remaining
    steps.
@@ -112,26 +113,20 @@ If the fetch fails (ticket not found, connector unavailable), report the
 failure to the user, do **not** guess ticket content, and stop the stage —
 do not fall through to steps 3+ with fabricated data.
 
-### Step 3: Load or create the repo catalog
+### Step 3: Load the repo catalog
 
-Read `aidlc/spaces/<active-space>/knowledge/repo-catalog.md`. This file is
-**user-owned**, not shipped by this plugin — it is created here, once, the
-first time this stage runs in a space that doesn't have one yet, and is never
-touched again by `aidlc update` or by uninstalling this plugin (the sanctioned
-user-owned path under `aidlc/spaces/*/knowledge/`).
-
-- If present: use it as-is.
-- If absent: seed it verbatim from the team's existing looper catalog at
-  `looper-code/artifacts/project-structure.md` if that file is reachable
-  from the project (same repo table format: repo name, type, API,
-  release branch, role, plus the `git clone <url>` block per repo section).
-  If that file is not reachable, create a one-entry placeholder with inline
-  instructions, then pause and ask the user to fill it in before continuing.
-
-Parse the table exactly the way `looper-code/commands/looper-artifacts-setup.md`
-already does: repo name, clone URL (from the `git clone ...` line in each
-repo's section), release branch, and the API/consumer-role columns (used as
-match signals in Step 5).
+Read `aidlc/spaces/<active-space>/knowledge/repo-catalog.md` — `{org, repos:
+[{name, url, branch, tags, role}]}`-shaped, where `role` is the user's own
+description of that repo's purpose/scope (recorded during onboarding — see
+`workspace-project-onboarding` Step 2). This file is **user-owned**, never
+touched by `aidlc update` or by uninstalling this plugin. `requires_stage`
+above guarantees `workspace-project-onboarding` has already run before
+this step, so on a normal run the catalog already exists (onboarding either
+found it or created it on the very first ticket). If it's somehow still
+absent — the onboarding stage was skipped some other way, or the catalog was
+deleted since — create it the same way onboarding would: ask the user for
+their repo list rather than assuming any specific project's repos; do not
+invent names.
 
 ### Step 4: Refresh the stable codebase mirror (every run — not just on request)
 
@@ -162,7 +157,11 @@ does not touch.
 ### Step 5: Classify impacted repos
 
 For each cataloged repo, pre-suggest a classification by matching the
-ticket's labels/components against the catalog's API/consumer-role column:
+ticket's labels/components against the catalog's `role`/`tags` fields — the
+user-supplied role from onboarding is the primary signal (e.g. a ticket
+about a customer-facing screen points at the repo whose `role` says
+"customer-facing web app," not at an internal admin tool), not a guess from
+the repo name alone:
 
 - **Change** — the repo is what this ticket modifies.
 - **Reference** — read-only context; resolved from the stable mirror, never
@@ -249,7 +248,7 @@ Handle its exit codes:
 
 ### Step 9: Produce the ticket-context artifact
 
-Write `jira-bridge-ticket-context.md` (this stage's declared `produces` artifact)
+Write `workspace-ticket-context.md` (this stage's declared `produces` artifact)
 under the intent's Initialization record directory, containing the parsed
 ticket fields from Step 2 (summary, description, acceptance criteria, labels,
 components, priority) so that `intent-capture`, `reverse-engineering`,
@@ -259,4 +258,4 @@ with.
 
 ### Step 10: Report completion
 
-Run `aidlc engine orchestrate report --stage jira-bridge-ticket-intake --result completed`.
+Run `aidlc engine orchestrate report --stage workspace-ticket-intake --result completed`.

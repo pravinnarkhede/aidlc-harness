@@ -1,9 +1,9 @@
 ---
-name: jira-bridge-ticket-intake-agent
+name: workspace-ticket-intake-agent
 display_name: Jira Ticket Intake Agent
-plugin: jira-bridge
+plugin: workspace
 examples:
-  - jira-bridge-ticket-context.md
+  - workspace-ticket-context.md
 description: >
   Detects a Jira ticket key in the intent's originating request, fetches the
   ticket via the Atlassian MCP connector, maintains a read-only stable-codebase
@@ -15,7 +15,7 @@ model: inherit
 
 # Jira Ticket Intake Agent
 
-You run the `jira-bridge-ticket-intake` stage. Follow that stage file's numbered
+You run the `workspace-ticket-intake` stage. Follow that stage file's numbered
 steps exactly. You do not re-implement cloning logic — you shell out to the
 existing `aidlc-workspace-sync.ts` tool for the actual clone/reconcile work,
 and you never write to the read-only stable-codebase mirror you refresh.

@@ -1,0 +1,16 @@
+[
+  {
+    "uuid": "01a090fd-1610-7d97-9f9e-f011e1c58dda",
+    "slug": "project-onboarding",
+    "dirName": "260911-project-onboarding",
+    "scope": "aux-project-onboarding",
+    "status": "complete"
+  },
+  {
+    "uuid": "01a0946d-8e1b-7e96-a5bc-fd38ed4a369d",
+    "slug": "aux-project-onboarding",
+    "dirName": "260912-aux-project-onboarding",
+    "scope": "aux-project-onboarding",
+    "status": "complete"
+  }
+]

@@ -154,6 +154,44 @@ ticket you start for that project — there's no separate onboarding command.
    normal ticket intake. Every ticket after this one finds onboarding
    already complete and skips it instantly.
 
+#### Prefer to skip the interview? Pre-fill the repo catalog yourself
+
+You don't have to answer onboarding's questions interactively — you can
+write the catalog file yourself *before* running your first ticket, at:
+
+```
+aidlc/spaces/default/knowledge/repo-catalog.md
+```
+
+Shape: `{org, repos: [{name, url, branch, tags, role}]}`, e.g.:
+
+```json
+{
+  "org": "your-git-org",
+  "repos": [
+    {
+      "name": "backend-api",
+      "url": "git@github.com:your-org/backend-api.git",
+      "branch": "main",
+      "tags": ["backend", "api"],
+      "role": "Backend API and database — owns the contract every other repo consumes"
+    },
+    {
+      "name": "web-app",
+      "url": "git@github.com:your-org/web-app.git",
+      "branch": "main",
+      "tags": ["frontend", "web"],
+      "role": "Customer-facing web app — consumes backend-api"
+    }
+  ]
+}
+```
+
+If this file already has real content (not just a placeholder) when
+onboarding runs, it uses that as the starting point and only briefly
+confirms the roles with you — it won't re-run the full interview from
+scratch.
+
 ### If this project has no code yet (greenfield)
 
 Onboarding's reverse-engineering step needs actual code to analyze, so for
@@ -301,6 +339,16 @@ seeds from it automatically.
 
 ## Known gotchas
 
+- **Cloned project repos and ticket folders live inside this repo's
+  working tree, but aren't part of this repo.** `stable-codebase/<repo>/`
+  and `<TICKET-KEY>/<repo>/` are separate git repositories that sit as
+  siblings at the harness root by design (AIDLC resolves repo paths as
+  `<project-root>/<repo-name>`) — this repo's own `.gitignore` has an
+  allowlist block that ignores everything at the root except the harness's
+  own known entries, so new ticket folders and `stable-codebase/` are
+  excluded automatically with no per-ticket edits needed. Don't remove that
+  block, and don't `git add -A` from the harness root without checking
+  `git status` first.
 - **Full clones, not shallow.** Cloning "Change" repos into a ticket folder
   pulls complete history, not `--depth 1` — budget time/disk for large repos.
 - **Repos with unusual filenames can break `git checkout` on Windows** (e.g.

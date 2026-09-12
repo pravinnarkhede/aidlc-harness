@@ -4,27 +4,27 @@
   "files": [
     {
       "path": ".claude/agents/auxiliary-bolt-push-agent.md",
-      "sha256": "sha256:5c9a696624d57f2500ab772d1583664cc14fed5d81d5b3b9939999f52b26c9d9"
+      "sha256": "sha256:3cdb345b7ca5fcb832808211f2b2c399e3d916986cbbea85040b943c90dd1cf8"
     },
     {
       "path": ".claude/agents/auxiliary-project-onboarding-agent.md",
-      "sha256": "sha256:b12722aec58611f0b296e52f7ff0c209c887d4dc35168e90bf1010e6963d7c9f"
+      "sha256": "sha256:d867e3b02e6a3f5f7398f0efa510f35594962b8c7e3b1c82f5f46266b1b27c2c"
     },
     {
       "path": ".claude/agents/auxiliary-ticket-intake-agent.md",
-      "sha256": "sha256:5ce97dcc2f78b4e993dc06469a8310ca95f19c241128852d2c033e6fade14ac8"
+      "sha256": "sha256:57f70e7d03bc1b518d4c6165f471a8c0ab639e433a0bdaf0011bbadafe60a803"
     },
     {
       "path": ".claude/aidlc-common/stages/construction/auxiliary-bolt-push-log.md",
-      "sha256": "sha256:a6cbca6c40ed79778ed82d0218f0b7b738b5ef1fcbdce72b6578cf6a20c2f3fd"
+      "sha256": "sha256:ca0d8d62939e7d0b21aee09c19af13b973c9cb1c5438174263fdb6812cbb3114"
     },
     {
       "path": ".claude/aidlc-common/stages/initialization/auxiliary-project-onboarding.md",
-      "sha256": "sha256:1d01a07f1dfe3d5bdb266690c9bb76bf8b84e14dc1626ebb1a3666d36e9de21c"
+      "sha256": "sha256:118b0218e3acba8a7809b6a29d5bc15a23bf75b21f73b635c01bddff1cb0ab80"
     },
     {
       "path": ".claude/aidlc-common/stages/initialization/auxiliary-ticket-intake.md",
-      "sha256": "sha256:c24affd78dba5c01cd2545d25d478c2e1515afe769f9ad38f3b9cfb6923b97b1"
+      "sha256": "sha256:b5734d4ddf5ca76990d1510ded72876c65d64e018dac434d639c90135104822f"
     }
   ]
 }

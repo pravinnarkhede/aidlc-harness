@@ -66,10 +66,18 @@ run `aidlc engine orchestrate report --stage auxiliary-project-onboarding
 
 Same catalog `auxiliary-ticket-intake` Step 3 reads:
 `aidlc/spaces/<active-space>/knowledge/repo-catalog.md` — `{org, repos:
-[{name, url, branch, tags, role}]}`-shaped table. If it doesn't exist yet,
-this is the first place it gets created — and for a project that spans
-multiple repos, do not try to infer each repo's purpose from cloning and
-guessing alone. Ask the user directly, up front, before cloning anything:
+[{name, url, branch, tags, role}]}`-shaped table.
+
+- **If the user has already pre-filled this file** (a real `org` and at
+  least one real `repos` entry, not a placeholder) before starting their
+  first ticket: use it as the starting point. Briefly confirm the roles
+  with the user rather than silently trusting it (a pre-filled file can
+  still be stale or incomplete), but do not re-run the full interactive
+  interview from scratch — that's for when nothing exists yet.
+- **If it doesn't exist yet, or is still just a placeholder**, this is the
+  first place it gets created — and for a project that spans multiple
+  repos, do not try to infer each repo's purpose from cloning and guessing
+  alone. Ask the user directly, up front, before cloning anything:
 
 - What is the overall project/product this set of repos implements?
 - For each repo: what is its **role** in that project (e.g. "backend API and

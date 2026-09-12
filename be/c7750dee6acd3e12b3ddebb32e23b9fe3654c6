@@ -1,0 +1,26 @@
+.gitignore
+  h_104014ee6b2ca4 92-108
+.claude/aidlc-common/stages/initialization/auxiliary-project-onboarding.md
+  h_104014ee6b2ca4 69-80
+.claude/tools/data/plugin-compose-auxiliary.json
+  h_104014ee6b2ca4 5
+.claude/tools/data/plugin-owned-auxiliary.json
+  h_104014ee6b2ca4 7,11,15,19,23,27
+README.md
+  h_104014ee6b2ca4 157-194,342-351
+aidlc/spaces/default/knowledge/repo-catalog.md
+  h_104014ee6b2ca4 1,79-127
+plugins/auxiliary/stages/initialization/auxiliary-project-onboarding.md
+  h_104014ee6b2ca4 69-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "bec7750dee6acd3e12b3ddebb32e23b9fe3654c6",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}

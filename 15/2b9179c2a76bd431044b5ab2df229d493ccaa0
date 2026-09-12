@@ -1,0 +1,76 @@
+aidlc/spaces/default/memory/project.md
+  s_bc1874d6f37bec::t_f6b33f343253a3 137-147
+  s_bc1874d6f37bec::t_5d5eb12efb6f2c 121-130
+  s_bc1874d6f37bec::t_0f16db509f6e90 51-55,61-116
+  s_bc1874d6f37bec::t_fd0367ccd16a07 18-28
+.gitignore
+  s_bc1874d6f37bec::t_d61169c7bb34cc 86-91
+aidlc/spaces/default/intents/260911-project-onboarding/project-description.json
+  s_26c667881c95c7::t_e7f424ba8752c1 1
+aidlc/spaces/default/intents/260912-aux-project-onboarding/project-description.json
+  s_bc1874d6f37bec::t_2ff4ea82d7f47d 1
+aidlc/spaces/default/intents/260911-project-onboarding/audit/desktop-3lmtpod-4169143711f5.md
+  s_26c667881c95c7::t_9e983558a74b74 169-202
+  s_26c667881c95c7::t_5793af4593b4a5 220-236
+  s_26c667881c95c7::t_e7f424ba8752c1 1-168
+  s_26c667881c95c7::t_3fe0b8a43ce676 204,206-209,211,213,215-217,219,238,240-243,245,247,249-251,253-270,272,274-277,279,281,283-285,287
+  s_26c667881c95c7::t_f2b3d87187297b 203,205,210,212,214,218,237,239,244,246,248,252,271,273,278,280,282,286
+aidlc/spaces/default/intents/260911-project-onboarding/aidlc-state.md
+  s_26c667881c95c7::t_e7f424ba8752c1 1-30,32-39,41-55,57-98,101-103,105
+  s_26c667881c95c7::t_9e983558a74b74 31,40,56,99-100,104
+aidlc/spaces/default/intents/260912-aux-project-onboarding/audit/desktop-3lmtpod-4169143711f5.md
+  s_bc1874d6f37bec::t_1ade9a662cf0b3 177,185,194,202,211,219,228,236,255,257-258,260,305,307-308,310,312,314-315,317,319,321-322,324,332,339,341,343-344,346,355,357-358,360,362,364-365,367,369,371-372,374,376,378-379,381,389-395,397,399-400,402,404,406-407,409,411,413-414,416,418,420-421,423,425,427-428,430,432,434-435,437,439,441-442,444,446,448-449,451
+  s_bc1874d6f37bec::t_bc92e2c2980ac9 261-303
+  s_bc1874d6f37bec::t_3c19df613089bc 170,172-175,179,181-182,187,189-192,196,198-199,204,206-209,213,215-216,221,223-226,230,232-233,237-253
+  s_bc1874d6f37bec::t_304b881e615a01 347-353
+  s_bc1874d6f37bec::t_0fb936f074bb20 382-388
+  s_bc1874d6f37bec::t_2ff4ea82d7f47d 1-168
+  s_bc1874d6f37bec::t_014da76976a295 169,171,176,178,180,183-184,186,188,193,195,197,200-201,203,205,210,212,214,217-218,220,222,227,229,231,234-235,254,256,259,304,306,309,311,313,316,318,320,323,325-331,333-338,340,342,345,354,356,359,361,363,366,368,370,373,375,377,380,396,398,401,403,405,408,410,412,415,417,419,422,424,426,429,431,433,436,438,440,443,445,447,450,452-458
+.claude/tools/data/scope-grid.json
+  s_26c667881c95c7::t_a678bc9276d2cd 2-41
+aidlc/spaces/default/intents/intents.json
+  s_bc1874d6f37bec::t_bc92e2c2980ac9 14
+  s_26c667881c95c7::t_9e983558a74b74 7
+  s_26c667881c95c7::t_e7f424ba8752c1 1-6,15-16
+  s_bc1874d6f37bec::t_2ff4ea82d7f47d 8-13
+.claude/scopes/aidlc-aux-project-onboarding.md
+  s_26c667881c95c7::t_31a44adc16dcd4 1-26
+aidlc/spaces/default/knowledge/architecture-overview.md
+  s_bc1874d6f37bec::t_7755e9c2e87a3b 1-164
+aidlc/spaces/default/intents/260912-aux-project-onboarding/aidlc-state.md
+  s_bc1874d6f37bec::t_2ff4ea82d7f47d 1-30,32-39,41-55,57-98,101-103,105
+  s_bc1874d6f37bec::t_bc92e2c2980ac9 31,40,56,99-100,104
+aidlc/spaces/default/knowledge/coding-standards.md
+  s_bc1874d6f37bec::t_51810bd7fe3519 1-223
+aidlc/spaces/default/memory/team.md
+  s_bc1874d6f37bec::t_b2cd7b28f43167 54-66,72-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "152b9179c2a76bd431044b5ab2df229d493ccaa0",
+  "prompts": {},
+  "humans": {
+    "h_104014ee6b2ca4": {
+      "author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  },
+  "sessions": {
+    "s_26c667881c95c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "83c317ca-c102-4dc5-a1db-fed114cc3a41",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    },
+    "s_bc1874d6f37bec": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "10d6c23e-53e6-435c-903c-721a1882e50f",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Pravin Narkhede <pravin.narkhede@definelabs.com>"
+    }
+  }
+}
